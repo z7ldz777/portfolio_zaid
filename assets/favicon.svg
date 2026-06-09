@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c8841a"/>
+      <stop offset="100%" stop-color="#e05a0a"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="14" fill="#0d0700"/>
+  <!-- Eyebrow -->
+  <path d="M 12,30 Q 48,12 84,24" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Upper eyelid — thick arch -->
+  <path d="M 12,40 Q 48,20 84,32" fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round"/>
+  <!-- Lower eyelid — thin curve -->
+  <path d="M 12,40 Q 48,56 84,32" fill="none" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Pupil — large filled circle -->
+  <circle cx="46" cy="38" r="10" fill="url(#g)"/>
+  <!-- Right fork — diagonal from outer corner, splits at bottom -->
+  <path d="M 84,32 L 90,50 L 85,66 M 90,50 L 96,62"
+        fill="none" stroke="url(#g)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Left scroll — spiral from inner corner -->
+  <path d="M 12,40 L 8,52
+           C 2,62 2,74 10,80
+           C 18,86 30,82 32,72
+           C 34,62 26,56 18,60
+           C 12,64 12,72 18,76"
+        fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
+</svg>
