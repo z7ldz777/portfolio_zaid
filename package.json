@@ -1,0 +1,10 @@
+{
+    "name": "zaid-portfolio-api",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Vercel serverless API for the portfolio admin dashboard (Neon + Vercel Blob).",
+    "dependencies": {
+        "@neondatabase/serverless": "^1.0.1",
+        "@vercel/blob": "^0.27.1"
+    }
+}
