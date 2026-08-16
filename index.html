@@ -139,77 +139,27 @@
         <button class="filter-btn" data-skills-filter="experience">Experience</button>
       </div>
 
-      <!-- ===== TOOLS (existing content, unchanged) ===== -->
+      <!-- ===== TOOLS (data-driven — see assets/js/site-data.js) ===== -->
       <div class="skills-category" data-skills-cat="tools">
-        <div class="skills-bento stagger-children">
-          <!-- Design -->
-          <div class="skill-card reveal" style="--i:0">
-            <div class="skill-card-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8E1616" stroke-width="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="12" cy="12" r="3" />
-                <path d="M3 12h6m6 0h6" />
-              </svg>
-            </div>
-            <h3>Design</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">Figma</span>
-              <span class="skill-tag">Picsart</span>
-              <span class="skill-tag">Canva</span>
-            </div>
-          </div>
-          <!-- Video Editing -->
-          <div class="skill-card reveal" style="--i:1">
-            <div class="skill-card-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B31F1F" stroke-width="1.5">
-                <polygon points="23 7 16 12 23 17 23 7" />
-                <rect x="1" y="5" width="15" height="14" rx="2" />
-              </svg>
-            </div>
-            <h3>Video Editing</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">CapCut</span>
-              <span class="skill-tag">BandLab</span>
-            </div>
-            <p class="skill-tag-note">BandLab — used for Audio Mixing</p>
-          </div>
-          <!-- Programming -->
-          <div class="skill-card reveal" style="--i:2">
-            <div class="skill-card-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8C999" stroke-width="1.5">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-            </div>
-            <h3>Programming</h3>
-            <div class="skill-tags">
-              <span class="skill-tag">HTML/CSS</span>
-              <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">React Native</span>
-              <span class="skill-tag">React</span>
-              <span class="skill-tag">.NET Core C#</span>
-            </div>
-          </div>
-        </div>
+        <div class="skills-bento stagger-children" id="skillsToolsGrid"></div>
       </div>
 
-      <!-- ===== COURSES (data-driven — see assets/js/skills-data.js) ===== -->
+      <!-- ===== COURSES (data-driven — see assets/js/site-data.js) ===== -->
       <div class="skills-category" data-skills-cat="courses" hidden>
         <div class="banner-grid stagger-children" id="coursesGrid"></div>
       </div>
 
-      <!-- ===== EDUCATION (static text) ===== -->
+      <!-- ===== EDUCATION (data-driven — see assets/js/site-data.js) ===== -->
       <div class="skills-category" data-skills-cat="education" hidden>
-        <p class="education-text reveal">Graduated from The Hashemite University, GPA 3.24, Software Engineering
-          major, 2026</p>
+        <p class="education-text reveal" id="educationText"></p>
       </div>
 
-      <!-- ===== EVENTS (data-driven — see assets/js/skills-data.js) ===== -->
+      <!-- ===== EVENTS (data-driven — see assets/js/site-data.js) ===== -->
       <div class="skills-category" data-skills-cat="events" hidden>
         <div class="banner-grid stagger-children" id="eventsGrid"></div>
       </div>
 
-      <!-- ===== EXPERIENCE (data-driven — see assets/js/skills-data.js) ===== -->
+      <!-- ===== EXPERIENCE (data-driven — see assets/js/site-data.js) ===== -->
       <div class="skills-category" data-skills-cat="experience" hidden>
         <div class="experience-grid stagger-children" id="experienceGrid"></div>
       </div>
@@ -225,149 +175,9 @@
         <div class="section-label">Selected Work</div>
         <h2 class="section-title">Video <span>Editing</span></h2>
       </div>
-      <div class="project-filters reveal">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="marketing">Marketing</button>
-        <button class="filter-btn" data-filter="educational">Educational</button>
-        <button class="filter-btn" data-filter="personal">Personal</button>
-        <button class="filter-btn" data-filter="film">Short Film</button>
-      </div>
-      <div class="projects-grid stagger-children" id="videoEditingGrid">
-
-        <!-- Marketing Videos -->
-        <div class="project-card reveal" data-cat="marketing" style="--i:0" data-type="youtube" data-src="vGAy_SWN0Jo"
-          data-short="true">
-          <img src="https://img.youtube.com/vi/vGAy_SWN0Jo/hqdefault.jpg" alt="IT Day Event" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>IT Day Event</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:1" data-type="youtube" data-src="hFxOXePXAVI"
-          data-short="true">
-          <img src="https://img.youtube.com/vi/hFxOXePXAVI/hqdefault.jpg" alt="NMK Performance" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>NMK Performance</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:2" data-type="youtube" data-src="q9eKkd7svck">
-          <img src="https://img.youtube.com/vi/q9eKkd7svck/hqdefault.jpg" alt="NMK SWAG" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>NMK SWAG</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:3" data-type="youtube" data-src="FTOJdJwxRJk">
-          <img src="https://img.youtube.com/vi/FTOJdJwxRJk/hqdefault.jpg" alt="Sweater Event Shot" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>Sweater Event Shot</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:4" data-type="youtube" data-src="Rhh1Pe1XM_Q">
-          <img src="https://img.youtube.com/vi/Rhh1Pe1XM_Q/hqdefault.jpg" alt="Sweater Intro" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>Sweater Intro</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:5" data-type="youtube" data-src="Q-Do-fMAnPc"
-          data-short="true">
-          <img src="https://img.youtube.com/vi/Q-Do-fMAnPc/hqdefault.jpg" alt="Sweater × Eventek Collab" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>Sweater × Eventek Collab</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:6" data-type="youtube" data-src="yDHNlTnpmPA">
-          <img src="https://img.youtube.com/vi/yDHNlTnpmPA/hqdefault.jpg" alt="CVision ShowReel" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>CVision ShowReel</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="marketing" style="--i:7" data-type="youtube" data-src="94AJsjVbZeI">
-          <img src="https://img.youtube.com/vi/94AJsjVbZeI/hqdefault.jpg" alt="SWAG Short Reel" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Marketing</span>
-            <h3>SWAG Short Reel</h3>
-          </div>
-        </div>
-
-        <!-- Educational Videos -->
-        <div class="project-card reveal" data-cat="educational" style="--i:0" data-type="youtube" data-src="arXTGK5rofk"
-          data-short="true">
-          <img src="https://img.youtube.com/vi/arXTGK5rofk/hqdefault.jpg" alt="C# Reel" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Educational</span>
-            <h3>C# Reel</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="educational" style="--i:1" data-type="youtube" data-src="BZzpSVPuxwo"
-          data-short="true">
-          <img src="https://img.youtube.com/vi/BZzpSVPuxwo/hqdefault.jpg" alt="Problem Solving" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Educational</span>
-            <h3>Problem Solving</h3>
-          </div>
-        </div>
-
-        <!-- Personal Videos -->
-        <div class="project-card reveal" data-cat="personal" style="--i:0" data-type="youtube" data-src="w8BQwV7Ub-A">
-          <img src="https://img.youtube.com/vi/w8BQwV7Ub-A/hqdefault.jpg" alt="Alexandria" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Personal</span>
-            <h3>Alexandria</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="personal" style="--i:1" data-type="youtube" data-src="VNkW7DDPs7I">
-          <img src="https://img.youtube.com/vi/VNkW7DDPs7I/hqdefault.jpg" alt="Cairo" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Personal</span>
-            <h3>Cairo</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="personal" style="--i:2" data-type="youtube" data-src="gIeueihghC0">
-          <img src="https://img.youtube.com/vi/gIeueihghC0/hqdefault.jpg" alt="Pyramids" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Personal</span>
-            <h3>Pyramids</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="personal" style="--i:3" data-type="youtube" data-src="HYgPCqasCnQ">
-          <img src="https://img.youtube.com/vi/HYgPCqasCnQ/hqdefault.jpg" alt="Personal Edit" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Personal</span>
-            <h3>Personal Edit</h3>
-          </div>
-        </div>
-
-        <!-- Short Film -->
-        <div class="project-card reveal" data-cat="film" style="--i:0" data-type="youtube" data-src="ifT5ubfv_hc">
-          <img src="https://img.youtube.com/vi/ifT5ubfv_hc/hqdefault.jpg" alt="Short Film Trip" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Short Film</span>
-            <h3>Short Film Trip</h3>
-          </div>
-        </div>
-
-      </div>
+      <!-- Filter tabs and cards are rendered from /api/content by site-data.js -->
+      <div class="project-filters reveal" id="videoEditingFilters"></div>
+      <div class="projects-grid stagger-children" id="videoEditingGrid"></div>
     </div>
   </section>
 
@@ -380,117 +190,8 @@
         <div class="section-label">Development Work</div>
         <h2 class="section-title">Programming <span>Projects</span></h2>
       </div>
-      <div class="project-filters reveal">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="gradproject">Graduation Project</button>
-        <button class="filter-btn" data-filter="websites">Websites</button>
-        <button class="filter-btn" data-filter="mobileapps">Mobile Apps</button>
-      </div>
-      <div class="banner-grid stagger-children" id="programmingGrid">
-
-        <!-- Graduation Project — existing files -->
-        <div class="project-card reveal" data-cat="gradproject" style="--i:0" data-type="file"
-          data-src="assets/projects/Graduation_project/SWAGpptxF.pptx" data-filename="SWAG Presentation.pptx">
-          <div class="project-card-file">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#e86c30" stroke-width="1.5">
-              <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z" />
-              <polyline points="13 2 13 9 20 9" />
-              <rect x="8" y="13" width="3" height="3" rx="0.5" fill="#e86c30" opacity="0.3" />
-              <rect x="8" y="13" width="8" height="3" rx="0.5" stroke="#e86c30" stroke-width="1" />
-            </svg>
-            <span class="file-ext">.PPTX</span>
-          </div>
-          <div class="project-card-overlay" style="opacity:1;">
-            <span class="cat-tag">Graduation Project</span>
-            <h3>SWAG — Presentation</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="gradproject" style="--i:1" data-type="file"
-          data-src="assets/projects/Graduation_project/SWAGdoc.docx" data-filename="SWAG Document.docx">
-          <div class="project-card-file">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2b7cd3" stroke-width="1.5">
-              <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z" />
-              <polyline points="13 2 13 9 20 9" />
-              <line x1="8" y1="13" x2="16" y2="13" />
-              <line x1="8" y1="17" x2="14" y2="17" />
-            </svg>
-            <span class="file-ext">.DOCX</span>
-          </div>
-          <div class="project-card-overlay" style="opacity:1;">
-            <span class="cat-tag">Graduation Project</span>
-            <h3>SWAG — Documentation</h3>
-          </div>
-        </div>
-
-        <!-- Graduation Project — banner entry (fill in below) -->
-        <div class="banner-card reveal" data-cat="gradproject" style="--i:2">
-          <div class="banner-card-image">
-            <img src="assets/projects/programming/prog-grad-banner.jpg" alt="Graduation project banner" loading="lazy">
-          </div>
-          <div class="banner-card-content">
-            <span class="cat-tag">Graduation Project</span>
-            <!-- PUT PROJECT TITLE HERE -->
-            <h3>SWAG — Graduation Project</h3>
-            <!-- PUT PROJECT DESCRIPTION HERE -->
-            <p>A comprehensive graduation project for the SWAG Platform, focusing on app development and user
-              experience.</p>
-            <!-- PUT GITHUB LINK HERE -->
-            <a href="https://github.com/Marah-Eid/SWAG-App" class="btn-github" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 015.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.7 5.4-5.27 5.68.42.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .3.2.66.79.55A10.52 10.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" />
-              </svg>
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-        <!-- Websites — banner entry (fill in below) -->
-        <div class="banner-card reveal" data-cat="websites" style="--i:0">
-          <div class="banner-card-image">
-            <img src="assets/projects/programming/prog-web-banner.jpg" alt="Website project banner" loading="lazy">
-          </div>
-          <div class="banner-card-content">
-            <span class="cat-tag">Websites</span>
-            <!-- PUT PROJECT TITLE HERE -->
-            <h3>SWAG Website</h3>
-            <!-- PUT PROJECT DESCRIPTION HERE -->
-            <p>A modern website design for the SWAG company, focusing on user experience and responsive design.</p>
-            <!-- PUT GITHUB LINK HERE -->
-            <a href="https://github.com/z7ldz777/swag-website" class="btn-github" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 015.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.7 5.4-5.27 5.68.42.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .3.2.66.79.55A10.52 10.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" />
-              </svg>
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-        <!-- Mobile Apps — banner entry (fill in below) -->
-        <div class="banner-card reveal" data-cat="mobileapps" style="--i:0">
-          <div class="banner-card-image">
-            <img src="assets/projects/programming/prog-mobile-banner.jpg" alt="Mobile app project banner"
-              loading="lazy">
-          </div>
-          <div class="banner-card-content">
-            <span class="cat-tag">Mobile Apps</span>
-            <!-- PUT PROJECT TITLE HERE -->
-            <h3>[Project Title]</h3>
-            <!-- PUT PROJECT DESCRIPTION HERE -->
-            <p>[Project description goes here.]</p>
-            <!-- PUT GITHUB LINK HERE -->
-            <a href="#" class="btn-github" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 015.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.7 5.4-5.27 5.68.42.36.78 1.08.78 2.18 0 1.57-.01 2.84-.01 3.23 0 .3.2.66.79.55A10.52 10.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" />
-              </svg>
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-      </div>
+      <div class="project-filters reveal" id="programmingFilters"></div>
+      <div class="banner-grid stagger-children" id="programmingGrid"></div>
     </div>
   </section>
 
@@ -503,57 +204,8 @@
         <div class="section-label">Visual Work</div>
         <h2 class="section-title">Design <span>Work</span></h2>
       </div>
-      <div class="project-filters reveal">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="figma">Figma</button>
-        <button class="filter-btn" data-filter="posters">Posters</button>
-      </div>
-      <div class="banner-grid stagger-children" id="designGrid">
-
-        <!-- Figma — banner entry (fill in below) -->
-        <div class="banner-card reveal" data-cat="figma" style="--i:0">
-          <div class="banner-card-image">
-            <img src="assets/design/design-figma-banner.jpg" alt="Figma project banner" loading="lazy">
-          </div>
-          <div class="banner-card-content">
-            <span class="cat-tag">Figma</span>
-            <!-- PUT PROJECT TITLE HERE -->
-            <h3>SWAG Figma Design</h3>
-            <!-- PUT PROJECT DESCRIPTION HERE -->
-            <p>A modern UI/UX design for the SWAG company's mobile application.</p>
-            <!-- PUT FIGMA LINK HERE -->
-            <a href="#" class="btn-figma" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M8 24c2.2 0 4-1.8 4-4v-4H8c-2.2 0-4 1.8-4 4s1.8 4 4 4zM4 12c0-2.2 1.8-4 4-4h4v8H8c-2.2 0-4-1.8-4-4zM4 4c0-2.2 1.8-4 4-4h4v8H8C5.8 8 4 6.2 4 4zM12 0h4c2.2 0 4 1.8 4 4s-1.8 4-4 4h-4V0zM20 12c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4z" />
-              </svg>
-              View on Figma
-            </a>
-          </div>
-        </div>
-
-        <!-- Posters — banner entry (fill in below) -->
-        <div class="banner-card reveal" data-cat="posters" style="--i:0">
-          <div class="banner-card-image">
-            <img src="assets/design/design-poster-banner.jpg" alt="Poster project banner" loading="lazy">
-          </div>
-          <div class="banner-card-content">
-            <span class="cat-tag">Posters</span>
-            <!-- PUT PROJECT TITLE HERE -->
-            <h3>SWAG Poster</h3>
-            <!-- PUT PROJECT DESCRIPTION HERE -->
-            <p>A creative poster design for the SWAG company event. It designed using word office.</p>
-            <button type="button" class="btn-poster">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-              View Poster
-            </button>
-          </div>
-        </div>
-
-      </div>
+      <div class="project-filters reveal" id="designFilters"></div>
+      <div class="banner-grid stagger-children" id="designGrid"></div>
     </div>
   </section>
 
@@ -566,55 +218,7 @@
         <div class="section-label">Sound Work</div>
         <h2 class="section-title">My <span>Songs</span></h2>
       </div>
-      <div class="projects-grid stagger-children" id="songsGrid">
-
-        <div class="project-card reveal" data-cat="songs" style="--i:0" data-type="audio"
-          data-src="assets/projects/songs/tofan.wav" data-cover="assets/projects/songs/tofan.jpg">
-          <img src="assets/projects/songs/tofan.jpg" alt="طوفان" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Song</span>
-            <h3>طوفان</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="songs" style="--i:1" data-type="audio"
-          data-src="assets/projects/songs/quwwati.wav" data-cover="assets/projects/songs/quwwati.jpg">
-          <img src="assets/projects/songs/quwwati.jpg" alt="قوتي" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Song</span>
-            <h3>قوتي</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="songs" style="--i:2" data-type="audio"
-          data-src="assets/projects/songs/kulluhum.wav" data-cover="assets/projects/songs/kulluhum.jpg">
-          <img src="assets/projects/songs/kulluhum.jpg" alt="كلهم" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Song</span>
-            <h3>كلهم</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="songs" style="--i:3" data-type="audio"
-          data-src="assets/projects/songs/layla.wav" data-cover="assets/projects/songs/layla.jpg">
-          <img src="assets/projects/songs/layla.jpg" alt="ليلة" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Song</span>
-            <h3>ليلة</h3>
-          </div>
-        </div>
-        <div class="project-card reveal" data-cat="songs" style="--i:4" data-type="audio"
-          data-src="assets/projects/songs/qanadeelak.wav" data-cover="assets/projects/songs/qanadeelak.jpg">
-          <img src="assets/projects/songs/qanadeelak.jpg" alt="قناديلك" loading="lazy"
-            style="width:100%;height:100%;object-fit:cover;">
-          <div class="project-card-overlay">
-            <span class="cat-tag">Song</span>
-            <h3>قناديلك</h3>
-          </div>
-        </div>
-
-      </div>
+      <div class="projects-grid stagger-children" id="songsGrid"></div>
     </div>
   </section>
 
@@ -705,19 +309,20 @@
 
         <!-- Social accounts — sit between the message box and the overview -->
         <div class="contact-socials-col reveal">
-          <a href="mailto:zaidshareef1852@gmail.com" aria-label="Email">
+          <a href="mailto:zaidshareef1852@gmail.com" aria-label="Email" id="socialEmail">
             <svg viewBox="0 0 24 24">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
               <polyline points="22,6 12,13 2,6" />
             </svg>
           </a>
-          <a href="https://wa.me/962779301409" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <a href="https://wa.me/962779301409" target="_blank" rel="noopener" aria-label="WhatsApp" id="socialWhatsapp">
             <svg viewBox="0 0 24 24">
               <path
                 d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z" />
             </svg>
           </a>
-          <a href="https://instagram.com/zaidshareef_" target="_blank" rel="noopener" aria-label="Instagram">
+          <a href="https://instagram.com/zaidshareef_" target="_blank" rel="noopener" aria-label="Instagram"
+            id="socialInstagram">
             <svg viewBox="0 0 24 24">
               <rect x="2" y="2" width="20" height="20" rx="5" />
               <circle cx="12" cy="12" r="5" />
@@ -725,7 +330,7 @@
             </svg>
           </a>
           <a href="https://www.linkedin.com/in/zaid-shareef-b5753b2a7" target="_blank" rel="noopener"
-            aria-label="LinkedIn">
+            aria-label="LinkedIn" id="socialLinkedin">
             <svg viewBox="0 0 24 24">
               <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
               <rect x="2" y="9" width="4" height="12" />
@@ -821,7 +426,7 @@
   <script src="assets/js/navigation.js" defer></script>
   <script src="assets/js/scroll-reveal.js" defer></script>
   <script src="assets/js/projects.js" defer></script>
-  <script src="assets/js/skills-data.js" defer></script>
+  <script src="assets/js/site-data.js" defer></script>
   <script src="assets/js/skills-filters.js" defer></script>
   <script src="assets/js/image-viewer.js" defer></script>
   <script src="assets/js/doc-viewer.js" defer></script>

@@ -1,45 +1,16 @@
 (function () {
     'use strict';
 
-    /* ---- PROJECT FILTERS (scoped per section) ---- */
-    const filterGroups = document.querySelectorAll('.project-filters');
+    /* ============================================
+       MODAL LOGIC (shared by every dynamically-rendered card)
+       ------------------------------------------------
+       Cards for Video Editing/Programming/Design/Songs/Courses/Events/
+       Experience are all rendered at runtime by site-data.js from
+       /api/content. Everything below uses event delegation on `document`
+       instead of querying cards at load time, so it works no matter when
+       a card actually gets added to the page.
+       ============================================ */
 
-    filterGroups.forEach(group => {
-        const section = group.closest('section');
-        if (!section) return;
-        const cards = section.querySelectorAll('.project-card, .banner-card');
-        const btns = group.querySelectorAll('.filter-btn');
-
-        function applyFilter(filter) {
-            cards.forEach(card => {
-                const show = filter === 'all' || card.dataset.cat === filter;
-                card.classList.toggle('hidden', !show);
-            });
-        }
-
-        const initialBtn = group.querySelector('.filter-btn.active') || btns[0];
-        if (initialBtn) applyFilter(initialBtn.dataset.filter);
-
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                applyFilter(btn.dataset.filter);
-            });
-        });
-    });
-
-    /* ---- PROJECT CARD VIDEO HOVER ---- */
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        const vid = card.querySelector('video');
-        if (vid) {
-            card.addEventListener('mouseenter', () => { vid.play().catch(() => { }); });
-            card.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
-        }
-    });
-
-    /* ---- PROJECT MODAL ---- */
     const modal = document.getElementById('projectModal');
     const modalBody = document.getElementById('modalBody');
     const modalClose = document.getElementById('modalClose');
@@ -154,22 +125,24 @@
     });
 
     // .project-card entries (video/audio/file) open the lightbox modal.
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => openModal(card));
+    // Delegated: these cards are rendered dynamically by site-data.js.
+    document.addEventListener('click', (e) => {
+        const card = e.target.closest('.project-card');
+        if (card) openModal(card);
     });
 
     // .banner-card entries (Programming / Design / Courses) open the larger
     // banner-style modal. Clicks on a real link (GitHub/Figma/Certificate)
     // are left alone so they navigate normally; a plain <button> (e.g. the
     // Poster "View Poster" button) has no href, so it falls through and
-    // explicitly triggers the modal itself. Delegated on document so this
-    // also covers banner-cards added dynamically later (e.g. Courses).
+    // explicitly triggers the modal itself. Event cards (data-event-id)
+    // handle their own richer modal in site-data.js instead.
     document.addEventListener('click', (e) => {
         const card = e.target.closest('.banner-card');
         if (!card) return;
-        if (card.dataset.eventId) return; // Event cards handle their own modal in skills-data.js
+        if (card.dataset.eventId) return;
         const link = e.target.closest('a');
-        if (link) return; // let GitHub/Figma/Certificate links navigate normally
+        if (link) return;
         openBannerModal(card);
     });
 
