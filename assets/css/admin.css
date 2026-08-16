@@ -32,10 +32,13 @@ body {
    ============================================ */
 .login-screen {
     min-height: 100vh;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+}
+
+.login-screen:not([hidden]) {
+    display: flex;
 }
 
 .login-box {
@@ -207,9 +210,12 @@ body {
    DASHBOARD SHELL
    ============================================ */
 .dashboard {
-    display: grid;
     grid-template-columns: 240px 1fr;
     min-height: 100vh;
+}
+
+.dashboard:not([hidden]) {
+    display: grid;
 }
 
 .sidebar {
@@ -425,9 +431,12 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
-    display: flex;
     justify-content: flex-end;
     z-index: 100;
+}
+
+.form-overlay:not([hidden]) {
+    display: flex;
 }
 
 .form-panel {
@@ -497,4 +506,12 @@ body {
     .main-panel {
         padding: 20px;
     }
+}
+
+/* #addNewBtn reuses .btn-primary but also gets toggled via the hidden
+   attribute — an id selector beats a class selector regardless of
+   source order, so this cleanly wins without touching .btn-primary
+   itself (which other always-visible buttons also use). */
+#addNewBtn[hidden] {
+    display: none;
 }
