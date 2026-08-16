@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin — Zaid Shareef Portfolio</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+
+<body>
+
+    <!-- ===================== LOGIN SCREEN ===================== -->
+    <div id="loginScreen" class="login-screen">
+        <form id="loginForm" class="login-box">
+            <h1>Admin <span>Login</span></h1>
+            <div class="form-field">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" autocomplete="username" required>
+            </div>
+            <div class="form-field">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn-primary">Log In</button>
+            <p id="loginError" class="error-text" hidden></p>
+        </form>
+    </div>
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <div id="dashboard" class="dashboard" hidden>
+        <aside class="sidebar">
+            <h2>Portfolio <span>Admin</span></h2>
+            <nav id="sidebarNav" class="sidebar-nav"></nav>
+            <a href="index.html" class="view-site-link" target="_blank" rel="noopener">View live site &#8599;</a>
+            <button id="logoutBtn" class="logout-btn" type="button">Log Out</button>
+        </aside>
+
+        <main class="main-panel">
+            <div class="panel-header">
+                <h1 id="panelTitle">—</h1>
+                <button id="addNewBtn" class="btn-primary" type="button" hidden>+ Add New</button>
+            </div>
+
+            <div id="statusMessage" class="status-message" hidden></div>
+
+            <div id="itemList" class="item-list"></div>
+
+            <!-- Slide-over form for add/edit -->
+            <div id="formOverlay" class="form-overlay" hidden>
+                <div class="form-panel">
+                    <div class="form-panel-header">
+                        <h2 id="formTitle">Add Item</h2>
+                        <button id="formCloseBtn" class="form-close" type="button" aria-label="Close">&times;</button>
+                    </div>
+                    <form id="itemForm"></form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/admin.js" defer></script>
+</body>
+
+</html>
