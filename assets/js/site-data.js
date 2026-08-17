@@ -150,12 +150,14 @@
         if (!grid || !filters) return;
 
         grid.innerHTML = data.designProjects.map((d, i) => {
-            let actionBtn = '';
-            if (d.category === 'figma' && d.link_url) {
-                actionBtn = '<a href="' + esc(d.link_url) + '" class="btn-figma" target="_blank" rel="noopener">' + ICON_FIGMA + 'View on Figma</a>';
-            } else if (d.category === 'posters') {
-                actionBtn = '<button type="button" class="btn-poster">' + ICON_POSTER + 'View Poster</button>';
-            }
+            // Whichever design item actually has a Figma link gets the Figma
+            // button — not tied to the category's slug staying exactly
+            // "figma", since that's admin-editable now and would silently
+            // break this if renamed. Anything without a link falls back to
+            // the generic "View" button that opens the image in the modal.
+            const actionBtn = d.link_url
+                ? '<a href="' + esc(d.link_url) + '" class="btn-figma" target="_blank" rel="noopener">' + ICON_FIGMA + 'View on Figma</a>'
+                : '<button type="button" class="btn-poster">' + ICON_POSTER + 'View Poster</button>';
             return '<div class="banner-card reveal" data-cat="' + esc(d.category) + '" style="--i:' + i + '">' +
                 '<div class="banner-card-image"><img src="' + esc(d.banner_url) + '" alt="' + esc(d.title) + '" loading="lazy"></div>' +
                 '<div class="banner-card-content"><span class="cat-tag">' + esc(d.category) + '</span>' +

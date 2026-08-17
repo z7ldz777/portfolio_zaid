@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
             siteContent[row.key] = row.value;
         }
 
-        res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
+        res.setHeader('Cache-Control', 's-maxage=5, stale-while-revalidate=30');
         res.status(200).json({
             categories: categoriesBySection,
             videos,
