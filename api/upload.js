@@ -45,6 +45,21 @@ if (RESOLVED_BLOB_TOKEN && !process.env.BLOB_READ_WRITE_TOKEN) {
     process.env.BLOB_READ_WRITE_TOKEN = RESOLVED_BLOB_TOKEN;
 }
 
+// Resolve store id similarly: prefer any custom-prefixed *_STORE_ID
+function resolveStoreId() {
+    for (const k of Object.keys(process.env)) {
+        if (k.endsWith('_STORE_ID') && k !== 'BLOB_STORE_ID') {
+            return process.env[k];
+        }
+    }
+    return process.env.BLOB_STORE_ID;
+}
+
+const RESOLVED_STORE_ID = resolveStoreId();
+if (RESOLVED_STORE_ID && !process.env.BLOB_STORE_ID) {
+    process.env.BLOB_STORE_ID = RESOLVED_STORE_ID;
+}
+
 // Original file size cap. Base64-encoded, this stays comfortably under
 // Vercel's fixed 4.5MB request body limit.
 const MAX_BYTES = 3 * 1024 * 1024; // 3MB
