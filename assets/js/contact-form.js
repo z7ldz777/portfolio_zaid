@@ -2,24 +2,45 @@
     'use strict';
 
     /* ---- CONTACT MESSAGE FORM ---- */
-    // No backend yet, so this opens the visitor's email client with the
-    // message prefilled. Swap this for a real endpoint later without
-    // touching the HTML — just change what happens on submit.
     const form = document.getElementById('contactForm');
     if (!form) return;
 
-    form.addEventListener('submit', (e) => {
+    // Small inline status line, inserted once, right after the submit button.
+    const statusEl = document.createElement('p');
+    statusEl.className = 'contact-form-status';
+    statusEl.setAttribute('aria-live', 'polite');
+    form.appendChild(statusEl);
+
+    const submitBtn = form.querySelector('.btn-send-message');
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = form.name.value.trim();
         const email = form.email.value.trim();
         const message = form.message.value.trim();
 
-        const subject = 'Portfolio message from ' + name;
-        const body = message + '\n\n— ' + name + ' (' + email + ')';
+        statusEl.textContent = '';
+        statusEl.className = 'contact-form-status';
+        if (submitBtn) { submitBtn.disabled = true; }
 
-        window.location.href = 'mailto:zaidshareef1852@gmail.com'
-            + '?subject=' + encodeURIComponent(subject)
-            + '&body=' + encodeURIComponent(body);
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
+
+            statusEl.textContent = 'Message sent — thanks for reaching out!';
+            statusEl.classList.add('success');
+            form.reset();
+        } catch (err) {
+            statusEl.textContent = err.message || 'Could not send your message. Please try again.';
+            statusEl.classList.add('error');
+        } finally {
+            if (submitBtn) { submitBtn.disabled = false; }
+        }
     });
 
 })();

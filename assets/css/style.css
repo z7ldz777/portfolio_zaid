@@ -1612,6 +1612,25 @@ section[id] {
     box-shadow: 0 8px 30px rgba(142, 22, 22, 0.35);
 }
 
+.btn-send-message:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.contact-form-status {
+    font-size: 13.5px;
+    min-height: 18px;
+}
+
+.contact-form-status.success {
+    color: #4caf50;
+}
+
+.contact-form-status.error {
+    color: #e05252;
+}
+
 /* Social accounts — small icon row, moved out of the big card grid */
 .contact-socials-col {
     display: flex;

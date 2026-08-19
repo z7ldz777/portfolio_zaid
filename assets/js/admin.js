@@ -163,6 +163,15 @@
         return String(str == null ? '' : str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result).split(',')[1]); // strip the "data:<mime>;base64," prefix
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
     function showStatus(message, type) {
         statusMessage.textContent = message;
         statusMessage.className = 'status-message ' + type;
@@ -232,6 +241,7 @@
             });
         });
         html += '<div class="nav-group-label">Site</div>';
+        html += '<button data-key="messages">Messages</button>';
         html += '<button data-key="categories">Categories</button>';
         html += '<button data-key="site_content">Site Text & Contact Info</button>';
 
@@ -264,6 +274,7 @@
         setActiveNav(key);
         if (key === 'categories') return renderCategoriesScreen();
         if (key === 'site_content') return renderSiteContentScreen();
+        if (key === 'messages') return renderMessagesScreen();
         return renderTableScreen(key);
     }
 
@@ -359,11 +370,18 @@
             fileInput.addEventListener('change', async () => {
                 const file = fileInput.files[0];
                 if (!file) return;
+                if (file.size > 3 * 1024 * 1024) {
+                    showStatus('That file is over 3MB — please use a smaller image.', 'error');
+                    fileInput.value = '';
+                    return;
+                }
                 fileInput.disabled = true;
                 try {
-                    const res = await fetch('/api/upload?filename=' + encodeURIComponent(file.name), {
+                    const dataBase64 = await fileToBase64(file);
+                    const res = await fetch('/api/upload', {
                         method: 'POST',
-                        body: file,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filename: file.name, dataBase64, contentType: file.type }),
                     });
                     const data = await res.json();
                     if (!res.ok) throw new Error(data.error || 'Upload failed');
@@ -627,6 +645,60 @@
                 } catch {
                     showStatus('Failed to save.', 'error');
                 }
+            });
+        });
+    }
+
+    /* ============================================
+       MESSAGES SCREEN (submitted via the public contact form)
+       ============================================ */
+    async function renderMessagesScreen() {
+        panelTitle.textContent = 'Messages';
+        addNewBtn.hidden = true;
+        itemList.innerHTML = '<div class="empty-state">Loading…</div>';
+
+        const res = await fetch('/api/admin/contact_messages');
+        const rows = await res.json();
+
+        if (!rows.length) {
+            itemList.innerHTML = '<div class="empty-state">No messages yet.</div>';
+            return;
+        }
+
+        itemList.innerHTML = rows.map((m) => {
+            const date = new Date(m.created_at).toLocaleString();
+            return '<div class="item-row" data-id="' + m.id + '" style="align-items:flex-start;flex-direction:column;gap:8px;">' +
+                '<div style="display:flex;justify-content:space-between;width:100%;gap:12px;">' +
+                '<div class="item-row-main">' +
+                '<div class="item-row-title">' + esc(m.name) + (m.is_read ? '' : ' &middot; <span style="color:var(--accent3)">new</span>') + '</div>' +
+                '<div class="item-row-sub">' + esc(m.email) + ' &middot; ' + esc(date) + '</div>' +
+                '</div>' +
+                '<div class="item-row-actions">' +
+                (m.is_read ? '' : '<button class="mark-read-btn">Mark Read</button>') +
+                '<button class="btn-danger delete-msg-btn">Delete</button>' +
+                '</div></div>' +
+                '<div style="font-size:14px;color:var(--text);white-space:pre-wrap;">' + esc(m.message) + '</div>' +
+                '</div>';
+        }).join('');
+
+        itemList.querySelectorAll('.item-row').forEach((rowEl) => {
+            const id = rowEl.dataset.id;
+            const markBtn = rowEl.querySelector('.mark-read-btn');
+            if (markBtn) {
+                markBtn.addEventListener('click', async () => {
+                    await fetch('/api/admin/contact_messages?id=' + id, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ is_read: true }),
+                    });
+                    renderMessagesScreen();
+                });
+            }
+            rowEl.querySelector('.delete-msg-btn').addEventListener('click', async () => {
+                if (!confirm('Delete this message?')) return;
+                await fetch('/api/admin/contact_messages?id=' + id, { method: 'DELETE' });
+                showStatus('Deleted.', 'success');
+                renderMessagesScreen();
             });
         });
     }

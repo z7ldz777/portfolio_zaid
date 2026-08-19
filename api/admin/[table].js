@@ -15,35 +15,42 @@
 const { sql } = require('../_db');
 const { requireAuth } = require('../_auth');
 
-// Table name -> which columns admin requests are allowed to write.
+// Table name -> which columns admin requests are allowed to write,
+// plus an optional custom sort order (defaults to sort_order, id).
 // This whitelist is what keeps this generic endpoint safe: column/table
 // identifiers NEVER come from the request, only from here.
 const TABLES = {
-    categories: ['section', 'slug', 'label', 'sort_order'],
-    videos: ['category_id', 'title', 'youtube_id', 'is_short', 'sort_order'],
-    programming_projects: ['category_id', 'title', 'description', 'banner_url', 'github_url', 'file_url', 'file_type', 'sort_order'],
-    design_projects: ['category_id', 'title', 'description', 'banner_url', 'link_url', 'sort_order'],
-    songs: ['title', 'audio_url', 'cover_url', 'sort_order'],
-    skills_tools: ['title', 'tags', 'note', 'sort_order'],
-    skills_courses: ['title', 'description', 'image_url', 'cert_url', 'sort_order'],
-    skills_events: ['title', 'description', 'main_image_url', 'gallery_urls', 'sort_order'],
-    skills_experience: ['company', 'exp_type', 'description', 'logo_url', 'sort_order'],
+    categories: { columns: ['section', 'slug', 'label', 'sort_order'] },
+    videos: { columns: ['category_id', 'title', 'youtube_id', 'is_short', 'sort_order'] },
+    programming_projects: { columns: ['category_id', 'title', 'description', 'banner_url', 'github_url', 'file_url', 'file_type', 'sort_order'] },
+    design_projects: { columns: ['category_id', 'title', 'description', 'banner_url', 'link_url', 'sort_order'] },
+    songs: { columns: ['title', 'audio_url', 'cover_url', 'sort_order'] },
+    skills_tools: { columns: ['title', 'tags', 'note', 'sort_order'] },
+    skills_courses: { columns: ['title', 'description', 'image_url', 'cert_url', 'sort_order'] },
+    skills_events: { columns: ['title', 'description', 'main_image_url', 'gallery_urls', 'sort_order'] },
+    skills_experience: { columns: ['company', 'exp_type', 'description', 'logo_url', 'sort_order'] },
+    // Rows here are created by the public /api/contact endpoint, not by
+    // the admin — only is_read is writable from this side (marking a
+    // message read/unread). Newest messages first, not by sort_order.
+    contact_messages: { columns: ['is_read'], orderBy: 'created_at DESC' },
 };
 
 module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     const { table, id } = req.query;
-    const allowedColumns = TABLES[table];
+    const tableConfig = TABLES[table];
 
-    if (!allowedColumns) {
+    if (!tableConfig) {
         res.status(404).json({ error: `Unknown table "${table}"` });
         return;
     }
+    const allowedColumns = tableConfig.columns;
+    const orderBy = tableConfig.orderBy || 'sort_order, id';
 
     try {
         if (req.method === 'GET') {
-            const rows = await sql.query(`SELECT * FROM ${table} ORDER BY sort_order, id`);
+            const rows = await sql.query(`SELECT * FROM ${table} ORDER BY ${orderBy}`);
             res.status(200).json(rows);
             return;
         }

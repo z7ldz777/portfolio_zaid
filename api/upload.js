@@ -1,7 +1,16 @@
 // api/upload.js
-// Protected. The admin dashboard sends a file here (as raw bytes, with
-// the target filename in a query param) and gets back a public URL to
-// store in the database (e.g. as a banner_url or logo_url).
+// Protected. The admin dashboard sends a file here as base64 JSON and
+// gets back a public Vercel Blob URL to store in the database (e.g. as
+// a banner_url or logo_url).
+//
+// Why base64 JSON instead of a raw file stream: Vercel Functions have a
+// hard, non-configurable 4.5MB request body limit either way, and raw
+// stream reading depends on disabling the platform's automatic body
+// parsing — a mechanism that's well-documented for Next.js but not
+// reliably confirmed for plain (non-Next.js) Vercel functions like this
+// one. Using the default JSON body parsing (which Vercel guarantees
+// works) is simpler and more reliable, at the cost of the ~33% size
+// overhead base64 adds — acceptable for banner/logo images.
 //
 // Only small images (banners/logos) are meant to go through this —
 // videos, audio, and PDFs stay on your existing static host as before.
@@ -12,7 +21,9 @@
 const { put } = require('@vercel/blob');
 const { requireAuth } = require('./_auth');
 
-const MAX_BYTES = 8 * 1024 * 1024; // 8MB — plenty for a banner/logo image
+// Original file size cap. Base64-encoded, this stays comfortably under
+// Vercel's fixed 4.5MB request body limit.
+const MAX_BYTES = 3 * 1024 * 1024; // 3MB
 
 module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
@@ -22,28 +33,23 @@ module.exports = async (req, res) => {
         return;
     }
 
-    const filename = req.query.filename;
-    if (!filename) {
-        res.status(400).json({ error: 'Missing ?filename=' });
-        return;
-    }
-
     try {
-        const chunks = [];
-        let total = 0;
-        for await (const chunk of req) {
-            total += chunk.length;
-            if (total > MAX_BYTES) {
-                res.status(413).json({ error: 'File too large (8MB max)' });
-                return;
-            }
-            chunks.push(chunk);
+        const { filename, dataBase64, contentType } = req.body || {};
+        if (!filename || !dataBase64) {
+            res.status(400).json({ error: 'Missing filename or file data' });
+            return;
         }
-        const buffer = Buffer.concat(chunks);
+
+        const buffer = Buffer.from(dataBase64, 'base64');
+        if (buffer.length > MAX_BYTES) {
+            res.status(413).json({ error: 'File too large — please use an image under 3MB' });
+            return;
+        }
 
         const blob = await put(filename, buffer, {
             access: 'public',
             addRandomSuffix: true, // avoids overwriting a file with the same name
+            contentType: contentType || undefined,
         });
 
         res.status(200).json({ url: blob.url });
@@ -51,12 +57,4 @@ module.exports = async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Upload failed' });
     }
-};
-
-// Vercel needs raw body access here (we're reading the stream ourselves
-// above), so turn off the default JSON body parsing for this route.
-module.exports.config = {
-    api: {
-        bodyParser: false,
-    },
 };
