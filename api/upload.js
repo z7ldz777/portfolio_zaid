@@ -34,6 +34,12 @@ module.exports = async (req, res) => {
     }
 
     try {
+        // Ensure Vercel Blob token is configured — helps diagnose misconfiguration
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            console.error('BLOB_READ_WRITE_TOKEN is not set in environment');
+            res.status(500).json({ error: 'Server misconfiguration: blob storage token missing' });
+            return;
+        }
         const { filename, dataBase64, contentType } = req.body || {};
         if (!filename || !dataBase64) {
             res.status(400).json({ error: 'Missing filename or file data' });
@@ -46,15 +52,19 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const blob = await put(filename, buffer, {
-            access: 'public',
-            addRandomSuffix: true, // avoids overwriting a file with the same name
-            contentType: contentType || undefined,
-        });
-
-        res.status(200).json({ url: blob.url });
+        try {
+            const blob = await put(filename, buffer, {
+                access: 'public',
+                addRandomSuffix: true, // avoids overwriting a file with the same name
+                contentType: contentType || undefined,
+            });
+            res.status(200).json({ url: blob.url });
+        } catch (innerErr) {
+            console.error('Blob upload error:', innerErr && innerErr.message ? innerErr.message : innerErr);
+            res.status(502).json({ error: 'Blob upload failed: ' + (innerErr && innerErr.message ? innerErr.message : 'unknown error') });
+        }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Upload failed' });
+        res.status(500).json({ error: err && err.message ? err.message : 'Upload failed' });
     }
 };
