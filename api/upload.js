@@ -26,13 +26,17 @@ const { requireAuth } = require('./_auth');
 // standard `BLOB_READ_WRITE_TOKEN` isn't set we'll search for any
 // environment variable that ends with `_READ_WRITE_TOKEN` and use that.
 function resolveBlobToken() {
-    if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+    // Prefer a custom-prefixed token (e.g. PORTFOLIO_BLOB_READ_WRITE_TOKEN)
+    // over a managed `BLOB_READ_WRITE_TOKEN` so projects can keep the
+    // old store connection while using a new public store via a prefixed
+    // env var created by the Blob UI.
     for (const k of Object.keys(process.env)) {
-        if (k.endsWith('_READ_WRITE_TOKEN')) {
+        if (k.endsWith('_READ_WRITE_TOKEN') && k !== 'BLOB_READ_WRITE_TOKEN') {
             return process.env[k];
         }
     }
-    return undefined;
+    // Fallback to the canonical var if no prefixed token found.
+    return process.env.BLOB_READ_WRITE_TOKEN;
 }
 
 const RESOLVED_BLOB_TOKEN = resolveBlobToken();
