@@ -21,6 +21,26 @@
 const { put } = require('@vercel/blob');
 const { requireAuth } = require('./_auth');
 
+// Support projects that use a custom env var prefix for their Blob store
+// (Vercel can create env names like MYAPP_BLOB_READ_WRITE_TOKEN). If a
+// standard `BLOB_READ_WRITE_TOKEN` isn't set we'll search for any
+// environment variable that ends with `_READ_WRITE_TOKEN` and use that.
+function resolveBlobToken() {
+    if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+    for (const k of Object.keys(process.env)) {
+        if (k.endsWith('_READ_WRITE_TOKEN')) {
+            return process.env[k];
+        }
+    }
+    return undefined;
+}
+
+const RESOLVED_BLOB_TOKEN = resolveBlobToken();
+if (RESOLVED_BLOB_TOKEN && !process.env.BLOB_READ_WRITE_TOKEN) {
+    // set the canonical env var so @vercel/blob can pick it up
+    process.env.BLOB_READ_WRITE_TOKEN = RESOLVED_BLOB_TOKEN;
+}
+
 // Original file size cap. Base64-encoded, this stays comfortably under
 // Vercel's fixed 4.5MB request body limit.
 const MAX_BYTES = 3 * 1024 * 1024; // 3MB
