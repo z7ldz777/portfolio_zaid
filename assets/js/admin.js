@@ -108,7 +108,7 @@
                 { key: 'title', label: 'Title', type: 'text', required: true },
                 { key: 'description', label: 'Description', type: 'textarea' },
                 { key: 'main_image_url', label: 'Main Image', type: 'image' },
-                { key: 'gallery_urls', label: 'Extra gallery images — one path per line', type: 'lines' },
+                { key: 'gallery_urls', label: 'Extra gallery images', type: 'gallery' },
                 { key: 'sort_order', label: 'Order', type: 'number' },
             ],
             titleOf: (r) => r.title,
@@ -396,6 +396,45 @@
             });
         });
 
+        itemForm.querySelectorAll('input[type="file"][data-gallery-field]').forEach((fileInput) => {
+            const galleryKey = fileInput.dataset.galleryField;
+            const valueInput = itemForm.querySelector('input[data-gallery-value="' + galleryKey + '"]');
+            const galleryList = itemForm.querySelector('[data-gallery-list="' + galleryKey + '"]');
+            fileInput.addEventListener('change', async () => {
+                const files = Array.from(fileInput.files || []);
+                if (!files.length) return;
+                if (files.some((file) => file.size > 3 * 1024 * 1024)) {
+                    showStatus('Each image must be under 3MB.', 'error');
+                    fileInput.value = '';
+                    return;
+                }
+                fileInput.disabled = true;
+                try {
+                    const uploadedUrls = [];
+                    for (const file of files) {
+                        const dataBase64 = await fileToBase64(file);
+                        const res = await fetch('/api/upload', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ filename: file.name, dataBase64, contentType: file.type }),
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error || 'Upload failed');
+                        uploadedUrls.push(data.url);
+                    }
+                    const urls = readGalleryUrls(valueInput);
+                    valueInput.value = JSON.stringify(urls.concat(uploadedUrls));
+                    renderGalleryPreviews(galleryList, valueInput);
+                    showStatus(uploadedUrls.length + ' image' + (uploadedUrls.length === 1 ? '' : 's') + ' uploaded.', 'success');
+                } catch (err) {
+                    showStatus(err.message || 'Upload failed', 'error');
+                } finally {
+                    fileInput.disabled = false;
+                    fileInput.value = '';
+                }
+            });
+        });
+
         itemForm.querySelector('#formCancelBtn').addEventListener('click', closeForm);
 
         itemForm.onsubmit = async (e) => {
@@ -464,6 +503,15 @@
             return '<div class="form-field"><label>' + esc(field.label) + '</label>' +
                 '<textarea name="' + field.key + '">' + esc(joined) + '</textarea>' + hint + '</div>';
         }
+        if (field.type === 'gallery') {
+            const urls = readGalleryUrlsValue(val);
+            return '<div class="form-field"><label>' + esc(field.label) + '</label>' +
+                '<div class="gallery-previews" data-gallery-list="' + field.key + '">' +
+                urls.map((url) => galleryPreviewHtml(url)).join('') + '</div>' +
+                '<input type="file" accept="image/*" multiple data-gallery-field="' + field.key + '">' +
+                '<input type="hidden" name="' + field.key + '" data-gallery-value="' + field.key + '" value="' + esc(JSON.stringify(urls)) + '">' +
+                '<div class="form-field-hint">Select one or more images. They will be uploaded and added to this gallery.</div>' + hint + '</div>';
+        }
         if (field.type === 'image') {
             return '<div class="form-field"><label>' + esc(field.label) + '</label>' +
                 '<img class="image-preview' + (val ? ' visible' : '') + '" data-preview-for="' + field.key + '" src="' + esc(val) + '">' +
@@ -495,9 +543,46 @@
             const raw = itemForm.querySelector('[name="' + field.key + '"]').value;
             return raw.split('\n').map((s) => s.trim()).filter(Boolean);
         }
+        if (field.type === 'gallery') {
+            return readGalleryUrls(itemForm.querySelector('input[data-gallery-value="' + field.key + '"]'));
+        }
         const el = itemForm.querySelector('[name="' + field.key + '"]');
         const value = el.value.trim();
         return value === '' ? null : value;
+    }
+
+    function readGalleryUrlsValue(value) {
+        if (Array.isArray(value)) return value.filter(Boolean);
+        if (typeof value !== 'string' || !value.trim()) return [];
+        try {
+            const parsed = JSON.parse(value);
+            return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+        } catch {
+            return value.split('\n').map((url) => url.trim()).filter(Boolean);
+        }
+    }
+
+    function readGalleryUrls(input) {
+        return readGalleryUrlsValue(input ? input.value : '');
+    }
+
+    function galleryPreviewHtml(url) {
+        return '<div class="gallery-preview" data-gallery-url="' + esc(url) + '">' +
+            '<img src="' + esc(url) + '" alt="">' +
+            '<button type="button" class="gallery-remove" aria-label="Remove image">Remove</button></div>';
+    }
+
+    function renderGalleryPreviews(galleryList, valueInput) {
+        if (!galleryList) return;
+        galleryList.innerHTML = readGalleryUrls(valueInput).map((url) => galleryPreviewHtml(url)).join('');
+        galleryList.querySelectorAll('.gallery-remove').forEach((removeButton) => {
+            removeButton.addEventListener('click', () => {
+                const preview = removeButton.closest('[data-gallery-url]');
+                const url = preview.dataset.galleryUrl;
+                valueInput.value = JSON.stringify(readGalleryUrls(valueInput).filter((item) => item !== url));
+                preview.remove();
+            });
+        });
     }
 
     function closeForm() {
